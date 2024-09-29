@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="956957e2-34b9-4d10-82fc-2627f04d9c16" name="変更" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/node_modules/.pnpm/@remix-run+server-runtime@2.10.3_typescript@5.5.4/node_modules/@remix-run/server-runtime/dist/sessions/cookieStorage.d.ts" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2jwpKeD0gd5Q34iJTbO28CoNNYc" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Database Script.1insured_counts.sql.executor": "Run",
+    "Database Script.findy.sql.executor": "Run",
+    "Database Script.green.sql.executor": "Run",
+    "RunOnceActivity.OpenDatabaseViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "database.data.extractors.current.export.id": "SQL Inserts",
+    "deno.use.library": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/noc/Downloads/1insured_counts.sql",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_interpreter_path": "/home/noc/.volta/bin/node",
+    "nodejs_package_manager_path": "pnpm",
+    "prettierjs.PrettierConfiguration.Package": "/Users/user/dev/itc-trends/node_modules/prettier",
+    "settings.editor.selected.configurable": "configurable.group.database.main",
+    "ts.external.directory.path": "/home/noc/dev/itc-trends/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ],
+    "RunConfigurationTargetLRU": [
+      "52ac5915-01ba-4ca6-bc3e-ff3a0c85e30c/database/\"postgres\"/schema/\"public\""
+    ]
+  }
+}]]></component>
+  <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
+    <layout>
+      <window_info id="Bookmarks" show_stripe_button="false" side_tool="true" />
+      <window_info id="Merge Requests" show_stripe_button="false" />
+      <window_info id="Welcome to GitHub Copilot" show_stripe_button="false" />
+      <window_info id="Commit_Guest" show_stripe_button="false" />
+      <window_info id="Pull Requests" show_stripe_button="false" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15956368" />
+      <window_info id="Commit" order="1" weight="0.25" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="TypeScript" show_stripe_button="false" />
+      <window_info anchor="bottom" id="TODO" show_stripe_button="false" />
+      <window_info anchor="bottom" id="File Transfer" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="0" />
+      <window_info anchor="bottom" id="Problems" order="1" />
+      <window_info anchor="bottom" id="Problems View" order="2" />
+      <window_info anchor="bottom" id="Terminal" order="3" />
+      <window_info anchor="bottom" id="Services" order="4" />
+      <window_info anchor="right" id="Endpoints" show_stripe_button="false" />
+      <window_info anchor="right" id="github.copilotToolWindow" show_stripe_button="false" />
+      <window_info anchor="right" id="Coverage" show_stripe_button="false" side_tool="true" />
+      <window_info anchor="right" id="GitHub Copilot Chat" show_stripe_button="false" />
+      <window_info anchor="right" content_ui="combo" id="Notifications" order="0" weight="0.25" />
+      <window_info active="true" anchor="right" id="AIAssistant" order="1" visible="true" weight="0.23160832" />
+      <window_info anchor="right" id="Database" order="2" weight="0.25" />
+      <window_info anchor="right" id="Gradle" order="3" weight="0.25" />
+      <window_info anchor="right" id="Maven" order="4" weight="0.25" />
+    </layout>
+  </component>
+  <component name="ReactDesignerToolWindowState">
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.intellij.reactbuddy.reactComponents" value="false" />
+        <entry key="com.intellij.reactbuddy.reactInspector" value="false" />
+        <entry key="com.intellij.reactbuddy.storybook" value="false" />
+      </map>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/components/ui" />
+      <recent name="$PROJECT_DIR$/app/components" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/app/lib" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Database Script.findy.sql">
+    <configuration name="1insured_counts.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$USER_HOME$/Downloads/1insured_counts.sql" />
+      <script-mode>FILE</script-mode>
+      <data-source id="52ac5915-01ba-4ca6-bc3e-ff3a0c85e30c" namespace="database/&quot;postgres&quot;/schema/&quot;public&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="findy.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$USER_HOME$/Downloads/findy.sql" />
+      <script-mode>FILE</script-mode>
+      <data-source id="52ac5915-01ba-4ca6-bc3e-ff3a0c85e30c" namespace="database/&quot;postgres&quot;/schema/&quot;public&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="green.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$USER_HOME$/Downloads/green.sql" />
+      <script-mode>FILE</script-mode>
+      <data-source id="52ac5915-01ba-4ca6-bc3e-ff3a0c85e30c" namespace="database/&quot;postgres&quot;/schema/&quot;public&quot;" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Database Script.findy.sql" />
+        <item itemvalue="Database Script.green.sql" />
+        <item itemvalue="Database Script.1insured_counts.sql" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-WS-242.20224.426" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="デフォルトタスク">
+      <changelist id="956957e2-34b9-4d10-82fc-2627f04d9c16" name="変更" comment="" />
+      <created>1722307931458</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1722307931458</updated>
+      <workItem from="1722307932850" duration="1381000" />
+      <workItem from="1722310453032" duration="22531000" />
+      <workItem from="1722385168776" duration="2367000" />
+      <workItem from="1722389232935" duration="196000" />
+      <workItem from="1722389438339" duration="9738000" />
+      <workItem from="1722411055469" duration="1702000" />
+      <workItem from="1722419647580" duration="66000" />
+      <workItem from="1722419722262" duration="13888000" />
+      <workItem from="1722476579618" duration="66205000" />
+      <workItem from="1722954444714" duration="11588000" />
+      <workItem from="1723004842055" duration="310000" />
+      <workItem from="1723005161227" duration="13775000" />
+      <workItem from="1724693702009" duration="233000" />
+      <workItem from="1724695058931" duration="418000" />
+      <workItem from="1724695490957" duration="368000" />
+      <workItem from="1724695880246" duration="208000" />
+      <workItem from="1724696095874" duration="320000" />
+      <workItem from="1724696928718" duration="30000" />
+      <workItem from="1724696963276" duration="46000" />
+      <workItem from="1724697069495" duration="21000" />
+      <workItem from="1724697094559" duration="635000" />
+      <workItem from="1724697743519" duration="384000" />
+      <workItem from="1724698132510" duration="288000" />
+      <workItem from="1724698440275" duration="320000" />
+      <workItem from="1724698765207" duration="7000" />
+      <workItem from="1724838947451" duration="315000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/tailwind.config.js" />
+      </list>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

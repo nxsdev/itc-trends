@@ -66,9 +66,14 @@ pages_build_output_dir = "./build/client"
 # When using environment-specific overrides for bindings, ALL bindings must be specified on a per-environment basis.
 # Docs: https://developers.cloudflare.com/pages/functions/wrangler-configuration#environment-specific-overrides
 
+[vars]
+ENV = "development"
+DATABASE_URL = "postgresql://postgres:postgres@127.0.0.1:54322/postgres"
+
 ######## PREVIEW environment config ########
 
-# [env.preview.vars]
+[env.preview.vars]
+ENV = "preview"
 # API_KEY = "xyz789"
 
 # [[env.preview.kv_namespaces]]
@@ -77,7 +82,8 @@ pages_build_output_dir = "./build/client"
 
 ######## PRODUCTION environment config ########
 
-# [env.production.vars]
+[env.production.vars]
+ENV = "production"
 # API_KEY = "abc123"
 
 # [[env.production.kv_namespaces]]

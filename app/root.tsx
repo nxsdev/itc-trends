@@ -1,45 +1,100 @@
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+import "./tailwind.css"
 
-import "./tailwind.css";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/cloudflare"
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react"
+import { clsx } from "clsx"
+import { Provider, createStore } from "jotai"
+import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes"
+import { envAtom } from "~/atoms/env-atom"
+import { userAtom } from "~/atoms/user-atom"
+import { Header } from "~/components/layout/header"
+import { Toaster } from "~/components/ui/sonner"
+import { createSupabaseClient } from "~/lib/supabase/client.server"
+import Footer from "./components/layout/footer"
+import { themeSessionResolver } from "./sessions.server"
 
-export const links: LinksFunction = () => [
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
-  {
-    rel: "preconnect",
-    href: "https://fonts.gstatic.com",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-  },
-];
+// Return the theme from the session storage using the loader
+export async function loader({ request, context }: LoaderFunctionArgs) {
+  const { getTheme } = await themeSessionResolver(request)
+  const { supabase } = await createSupabaseClient(request, context)
+  const {
+    data: { session },
+  } = await supabase.locals.getSession()
 
-export function Layout({ children }: { children: React.ReactNode }) {
+  return {
+    theme: getTheme(),
+    user: session?.user,
+    ENV: {
+      APP_URL: context.cloudflare.env.APP_URL || "",
+      SUPABASE_URL: context.cloudflare.env.SUPABASE_URL || "",
+      SUPABASE_ANON_KEY: context.cloudflare.env.SUPABASE_ANON_KEY || "",
+    },
+  }
+}
+
+// `themeAction` is the action name that's used to change the theme in the session storage.
+export default function AppWithProviders() {
+  const data = useLoaderData<typeof loader>()
+  const { user } = useLoaderData<typeof loader>()
+  const store = createStore()
+  store.set(userAtom, user ?? null)
+  store.set(envAtom, data.ENV)
+
   return (
-    <html lang="en">
+    <ThemeProvider specifiedTheme={data.theme} themeAction="/action/set-theme">
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ThemeProvider>
+  )
+}
+
+export const meta: MetaFunction = () => {
+  return [
+    { charset: "utf-8" },
+    { title: "ITC Trends | IT企業の社員数推移を可視化" },
+    {
+      name: "description",
+      content:
+        "IT/Webエンジニアに特化した企業検索サイトです。企業の社員数推移をグラフで可視化し、成長性の高いスタートアップや優良企業を見つけることができます。",
+    },
+    {
+      property: "og:title",
+      content: "ITC Trends | IT企業の社員数推移を可視化",
+    },
+    {
+      property: "og:description",
+      content:
+        "IT企業の社員数推移をグラフで可視化し、成長性の高いスタートアップや優良企業を見つけることができます。",
+    },
+    { property: "og:image", content: "" },
+    { property: "og:url", content: "https://itc-trends.com" },
+  ]
+}
+
+export function App() {
+  const data = useLoaderData<typeof loader>()
+  const [theme] = useTheme()
+
+  return (
+    <html lang="ja" className={clsx(theme)}>
       <head>
-        <meta charSet="utf-8" />
+        <meta httpEquiv="Content-Type" content="text/html;charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="og:site_name" content="ITC Trends" />
+        <meta name="og:type" content="website" />
         <Meta />
+        <PreventFlashOnWrongTheme ssrTheme={Boolean(data.theme)} />
         <Links />
       </head>
-      <body>
-        {children}
+      <body className="min-h-screen antialiased">
+        <Header />
+        <Outlet />
+        <Toaster />
+        <Footer />
         <ScrollRestoration />
         <Scripts />
       </body>
     </html>
-  );
-}
-
-export default function App() {
-  return <Outlet />;
+  )
 }

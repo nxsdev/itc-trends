@@ -1,0 +1,1 @@
+ALTER TABLE "green" ALTER COLUMN "average_age" SET DATA TYPE numeric;

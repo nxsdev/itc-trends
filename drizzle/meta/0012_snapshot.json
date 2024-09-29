@@ -1,0 +1,1206 @@
+{
+  "id": "c9dc1bb1-53b5-42f9-9107-7b5cda034df2",
+  "prevId": "00e0d90c-26e5-40ba-b53b-ab6c8a180367",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.companies": {
+      "name": "companies",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "corporate_number": {
+          "name": "corporate_number",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name_kana": {
+          "name": "name_kana",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "address": {
+          "name": "address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_expanded_coverage": {
+          "name": "is_expanded_coverage",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "pension_office": {
+          "name": "pension_office",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "coverage_start_date": {
+          "name": "coverage_start_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "url": {
+          "name": "url",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "favorite_count": {
+          "name": "favorite_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "companies_corporate_number_unique": {
+          "name": "companies_corporate_number_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "corporate_number"
+          ]
+        }
+      }
+    },
+    "public.company_registration_requests": {
+      "name": "company_registration_requests",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "corporate_number": {
+          "name": "corporate_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "registered_at": {
+          "name": "registered_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "user_id_idx": {
+          "name": "user_id_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "company_registration_requests_company_id_companies_id_fk": {
+          "name": "company_registration_requests_company_id_companies_id_fk",
+          "tableFrom": "company_registration_requests",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "company_registration_requests_corporate_number_unique": {
+          "name": "company_registration_requests_corporate_number_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "corporate_number"
+          ]
+        }
+      }
+    },
+    "public.favorites": {
+      "name": "favorites",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "favorites_user_id_users_id_fk": {
+          "name": "favorites_user_id_users_id_fk",
+          "tableFrom": "favorites",
+          "tableTo": "users",
+          "schemaTo": "auth",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "favorites_company_id_companies_id_fk": {
+          "name": "favorites_company_id_companies_id_fk",
+          "tableFrom": "favorites",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.findy": {
+      "name": "findy",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "company_name": {
+          "name": "company_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "location": {
+          "name": "location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "established_at": {
+          "name": "established_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "president": {
+          "name": "president",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "url": {
+          "name": "url",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.green": {
+      "name": "green",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "company_name": {
+          "name": "company_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "industry": {
+          "name": "industry",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "company_features": {
+          "name": "company_features",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "capital": {
+          "name": "capital",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sales": {
+          "name": "sales",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "established_date": {
+          "name": "established_date",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ceo": {
+          "name": "ceo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "business_description": {
+          "name": "business_description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stock_listing": {
+          "name": "stock_listing",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "major_shareholders": {
+          "name": "major_shareholders",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "main_clients": {
+          "name": "main_clients",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "employee_count": {
+          "name": "employee_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "average_age": {
+          "name": "average_age",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "headquarters_address": {
+          "name": "headquarters_address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.insured_counts": {
+      "name": "insured_counts",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "insured_count": {
+          "name": "insured_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "count_date": {
+          "name": "count_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "insured_counts_company_id_companies_id_fk": {
+          "name": "insured_counts_company_id_companies_id_fk",
+          "tableFrom": "insured_counts",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "insured_counts_company_id_count_date_unique": {
+          "name": "insured_counts_company_id_count_date_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "company_id",
+            "count_date"
+          ]
+        }
+      }
+    },
+    "public.job_listings": {
+      "name": "job_listings",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "job_number": {
+          "name": "job_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "corporate_number": {
+          "name": "corporate_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reception_date": {
+          "name": "reception_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expiration_date": {
+          "name": "expiration_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "public_employment_security_office": {
+          "name": "public_employment_security_office",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "job_category": {
+          "name": "job_category",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "online_application_accepted": {
+          "name": "online_application_accepted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "industry_classification": {
+          "name": "industry_classification",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trial_employment_desired": {
+          "name": "trial_employment_desired",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "company_name": {
+          "name": "company_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "company_name_kana": {
+          "name": "company_name_kana",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "company_postal_code": {
+          "name": "company_postal_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "company_address": {
+          "name": "company_address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "company_website": {
+          "name": "company_website",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "employee_count_total": {
+          "name": "employee_count_total",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "employee_count_workplace": {
+          "name": "employee_count_workplace",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "female_employee_count": {
+          "name": "female_employee_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "part_time_employee_count": {
+          "name": "part_time_employee_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "establishment_year": {
+          "name": "establishment_year",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "capital": {
+          "name": "capital",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "has_labor_union": {
+          "name": "has_labor_union",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "business_description": {
+          "name": "business_description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "company_features": {
+          "name": "company_features",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "job_title": {
+          "name": "job_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "job_description": {
+          "name": "job_description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "employment_type": {
+          "name": "employment_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_dispatch": {
+          "name": "is_dispatch",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "dispatch_license_number": {
+          "name": "dispatch_license_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "employment_period": {
+          "name": "employment_period",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "work_location_postal_code": {
+          "name": "work_location_postal_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "work_location_address": {
+          "name": "work_location_address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "nearest_station": {
+          "name": "nearest_station",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "commute_time": {
+          "name": "commute_time",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "commute_method": {
+          "name": "commute_method",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "smoking_policy": {
+          "name": "smoking_policy",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "car_commute_allowed": {
+          "name": "car_commute_allowed",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "base_salary_min": {
+          "name": "base_salary_min",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "base_salary_max": {
+          "name": "base_salary_max",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fixed_overtime_pay": {
+          "name": "fixed_overtime_pay",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fixed_overtime_hours": {
+          "name": "fixed_overtime_hours",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "salary_type": {
+          "name": "salary_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "payment_date": {
+          "name": "payment_date",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bonus_system": {
+          "name": "bonus_system",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "salary_raise_system": {
+          "name": "salary_raise_system",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "work_hours_start": {
+          "name": "work_hours_start",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "work_hours_end": {
+          "name": "work_hours_end",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "break_time": {
+          "name": "break_time",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "overtime_hours_average": {
+          "name": "overtime_hours_average",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "special_overtime_conditions": {
+          "name": "special_overtime_conditions",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "annual_holidays": {
+          "name": "annual_holidays",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "holidays": {
+          "name": "holidays",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "paid_leave_days": {
+          "name": "paid_leave_days",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "insurance_coverage": {
+          "name": "insurance_coverage",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "retirement_system": {
+          "name": "retirement_system",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "retirement_age": {
+          "name": "retirement_age",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "rehiring_system": {
+          "name": "rehiring_system",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "trial_period": {
+          "name": "trial_period",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "trial_period_duration": {
+          "name": "trial_period_duration",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "housing_provided": {
+          "name": "housing_provided",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "childcare_facility_available": {
+          "name": "childcare_facility_available",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "age_limit_min": {
+          "name": "age_limit_min",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "age_limit_max": {
+          "name": "age_limit_max",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "age_limit_reason": {
+          "name": "age_limit_reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "education_requirement": {
+          "name": "education_requirement",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "required_experience": {
+          "name": "required_experience",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "required_licenses": {
+          "name": "required_licenses",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "hiring_count": {
+          "name": "hiring_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "selection_methods": {
+          "name": "selection_methods",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "result_notification_timing": {
+          "name": "result_notification_timing",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "result_notification_method": {
+          "name": "result_notification_method",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "required_documents": {
+          "name": "required_documents",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "application_method": {
+          "name": "application_method",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "selection_location": {
+          "name": "selection_location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contact_department": {
+          "name": "contact_department",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contact_position": {
+          "name": "contact_position",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contact_phone_number": {
+          "name": "contact_phone_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contact_email": {
+          "name": "contact_email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "job_listings_job_number_index": {
+          "name": "job_listings_job_number_index",
+          "columns": [
+            {
+              "expression": "job_number",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "job_listings_corporate_number_index": {
+          "name": "job_listings_corporate_number_index",
+          "columns": [
+            {
+              "expression": "corporate_number",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "job_listings_company_name_index": {
+          "name": "job_listings_company_name_index",
+          "columns": [
+            {
+              "expression": "company_name",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "job_listings_job_title_index": {
+          "name": "job_listings_job_title_index",
+          "columns": [
+            {
+              "expression": "job_title",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "job_listings_reception_date_index": {
+          "name": "job_listings_reception_date_index",
+          "columns": [
+            {
+              "expression": "reception_date",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "job_listings_expiration_date_index": {
+          "name": "job_listings_expiration_date_index",
+          "columns": [
+            {
+              "expression": "expiration_date",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "job_listings_job_number_unique": {
+          "name": "job_listings_job_number_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "job_number"
+          ]
+        }
+      }
+    },
+    "public.profile": {
+      "name": "profile",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "username": {
+          "name": "username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "full_name": {
+          "name": "full_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "avatar_url": {
+          "name": "avatar_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "provider": {
+          "name": "provider",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "plan": {
+          "name": "plan",
+          "type": "plan_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'free'"
+        },
+        "is_admin": {
+          "name": "is_admin",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "profile_id_users_id_fk": {
+          "name": "profile_id_users_id_fk",
+          "tableFrom": "profile",
+          "tableTo": "users",
+          "schemaTo": "auth",
+          "columnsFrom": [
+            "id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "auth.users": {
+      "name": "users",
+      "schema": "auth",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {
+    "public.plan_type": {
+      "name": "plan_type",
+      "schema": "public",
+      "values": [
+        "free",
+        "pro",
+        "lifetime",
+        "vip"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
