@@ -6,7 +6,7 @@ import { SignInModal } from "~/components/sign-in-modal"
 import { Button } from "~/components/ui/button"
 import { useUser } from "~/hooks/use-user"
 import type { AuthProvider } from "~/lib/supabase/auth.supabase.server"
-import { FavoriteAction, type FavoriteResult } from "./types"
+import { FavoriteAction, type FavoriteResult } from "../types"
 
 type FavoriteButtonProps = {
   companyId: string
@@ -21,7 +21,7 @@ export function FavoriteButton({
 }: FavoriteButtonProps) {
   const user = useUser()
   const fetcher = useFetcher<FavoriteResult>()
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   // 楽観的UIの実装
   const optimisticFavoriteCount = fetcher.formData
@@ -56,8 +56,8 @@ export function FavoriteButton({
       } else {
         toast.error(fetcher.data.message, {
           action: {
-            label: 'アップグレード',
-            onClick: () => navigate('/pricing')
+            label: "アップグレード",
+            onClick: () => navigate("/pricing"),
           },
         })
       }

@@ -1,11 +1,15 @@
-import { Response } from "@cloudflare/workers-types"
 import { AppLoadContext } from "@remix-run/cloudflare"
 import { and, eq, gte } from "drizzle-orm"
 import { HTMLRewriter } from "html-rewriter-wasm"
 import { companies, companyRegistrationRequests } from "~/../schema"
 import { db } from "~/lib/db"
 import { createSupabaseClient } from "~/lib/supabase/client.server"
-import { ErrorResponse, ErrorType, createErrorResponse } from "~/types/errors"
+import {
+  AppError,
+  AuthenticationError,
+  PaymentRequiredError,
+  ValidationError,
+} from "~/lib/utils/errors"
 
 function convertJapaneseDate(dateString: string): string {
   const japaneseEraMap: { [key: string]: number } = {
@@ -36,14 +40,14 @@ export async function scrapeCompanyData(
   context: AppLoadContext,
   corporateNumber: string,
   url?: string
-): Promise<ErrorResponse | { success: true; data: any }> {
+): Promise<any> {
   const { supabase } = createSupabaseClient(request, context)
   const {
     data: { session },
     error,
   } = await supabase.locals.getSession()
   if (error || !session?.user) {
-    return createErrorResponse(ErrorType.AUTHENTICATION, "登録にはサインインが必要です。")
+    throw new AuthenticationError("登録にはサインインが必要です。")
   }
 
   const user = session.user
@@ -67,10 +71,7 @@ export async function scrapeCompanyData(
   // プランに応じて登録を制限
   const monthlyLimit = user.app_metadata.plan === "pro" ? 100 : 5
   if (monthlyRegistrations.length >= monthlyLimit) {
-    return createErrorResponse(
-      ErrorType.MONTHLY_LIMIT,
-      `月間の登録制限（${monthlyLimit}件）に達しました。`
-    )
+    throw new PaymentRequiredError(`月間の登録制限（${monthlyLimit}件）に達しました。`)
   }
 
   let rewriter: HTMLRewriter | undefined
@@ -101,10 +102,7 @@ export async function scrapeCompanyData(
 
     if (!response.ok) {
       console.error("Failed to fetch data. Status:", response.status)
-      return createErrorResponse(
-        ErrorType.SERVER,
-        `データの取得に失敗しました。ステータス: ${response.status}`
-      )
+      throw new AppError(`データの取得に失敗しました。ステータス: ${response.status}`)
     }
 
     let output = ""
@@ -153,7 +151,7 @@ export async function scrapeCompanyData(
 
     if (!scrapedData.corporateNumber) {
       console.log("No company data found for corporate number:", corporateNumber)
-      return createErrorResponse(ErrorType.VALIDATION, "該当する事業所が見つかりません。", {
+      throw new ValidationError("該当する事業所が見つかりません。", {
         corporate_number: "該当する事業所がありません。検索条件を変更し、再検索をしてください。",
       })
     }
@@ -166,7 +164,7 @@ export async function scrapeCompanyData(
       .where(eq(companies.corporateNumber, corporateNumber))
 
     if (existingCompany.length > 0) {
-      return createErrorResponse(ErrorType.VALIDATION, "この企業はすでに登録されています。", {
+      throw new ValidationError("この企業はすでに登録されています。", {
         corporate_number: "この企業はすでに登録されています。",
       })
     }
@@ -180,10 +178,13 @@ export async function scrapeCompanyData(
     }
   } catch (error: unknown) {
     console.error("Error in scrapeCompanyData:", error)
-    return createErrorResponse(
-      ErrorType.SERVER,
-      error instanceof Error ? error.message : "データの取得中にエラーが発生しました。"
-    )
+    if (error instanceof AppError) {
+      throw error
+    } else {
+      throw new AppError(
+        error instanceof Error ? error.message : "データの取得中にエラーが発生しました。"
+      )
+    }
   } finally {
     if (rewriter && typeof rewriter.free === "function") {
       rewriter.free()

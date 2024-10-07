@@ -1,11 +1,28 @@
 import type { Company, InsuredCount } from "schema"
-// omit createdAt and updatedAt
-export type CompanyChart = Omit<Company, "createdAt" | "updatedAt"> & {
+
+// 期間サマリーのインターフェース
+interface PeriodSummary {
+  initialCount: number
+  finalCount: number
+  countChange: number
+  percentChange: number
+}
+
+// チャートデータポイントのインターフェース
+interface ChartDataPoint {
+  month: string
+  insuredCount: number
+  countDate: string
+}
+
+export interface CompanyChart extends Omit<Company, "createdAt" | "updatedAt"> {
   insuredCounts: Omit<InsuredCount, "createdAt">[]
   isFavorite: boolean
   initialCount: number
   finalCount: number
   totalCount: number
+  periodSummary: PeriodSummary
+  chartData: ChartDataPoint[]
 }
 
 export const SortOption = {

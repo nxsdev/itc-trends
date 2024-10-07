@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "drizzle-orm": "npm:drizzle-orm@0.30.10",
+    "drizzle-orm/": "npm:/drizzle-orm@0.30.10/"
+  }
+}

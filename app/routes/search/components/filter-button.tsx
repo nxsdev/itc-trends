@@ -11,8 +11,8 @@ import { Select } from "~/components/ui/select"
 import { Separator } from "~/components/ui/separator"
 import { Switch } from "~/components/ui/switch"
 import { useMediaQuery } from "~/hooks/use-media-query"
-import { MAX_PRESETS, MIN_PRESETS } from "./constants"
-import { sortSearchParams } from "./utils"
+import { MAX_PRESETS, MIN_PRESETS } from "../constants"
+import { sortSearchParams } from "../utils"
 
 type LocalFilters = {
   excludeInactive: boolean

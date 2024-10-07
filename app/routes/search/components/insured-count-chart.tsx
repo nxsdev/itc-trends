@@ -20,18 +20,11 @@ import { Menu, MenuItem, MenuRoot } from "~/components/ui/menu"
 import { Separator } from "~/components/ui/separator"
 import { Tooltip } from "~/components/ui/tooltip"
 import { cn } from "~/lib/utils"
+import type { CompanyChart } from "../types.js"
 import { FavoriteButton } from "./favorite-button.js"
-import type { CompanyChart } from "./types.js"
 
 type InsuredCountChartProps = {
   company: CompanyChart
-}
-
-function formatDate(dateString: string | undefined): string {
-  if (!dateString) return ""
-  const [year, month, day] = dateString.split("-").map(Number)
-  const date = new Date(year, month - 1, day)
-  return date.toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })
 }
 
 function getVariantFromPercentChange(percentChange: number): "up" | "down" | "flat" {
@@ -44,23 +37,6 @@ function getChartColor(variant: "up" | "down" | "flat"): string {
   return "hsl(var(--brand-default))"
 }
 
-function calculatePeriodSummary(sortedCounts: any[]) {
-  const initialCount = sortedCounts[0]?.insuredCount ?? 0
-  const finalCount = sortedCounts[sortedCounts.length - 1]?.insuredCount ?? 0
-  const countChange = finalCount - initialCount
-  const percentChange = initialCount !== 0 ? (countChange / initialCount) * 100 : 0
-
-  return { initialCount, finalCount, countChange, percentChange }
-}
-
-function prepareChartData(sortedCounts: any[]) {
-  return sortedCounts.map((count) => ({
-    month: `${new Date(count.countDate).getMonth() + 1}月`,
-    insuredCount: count.insuredCount,
-    countDate: formatDate(count.countDate),
-  }))
-}
-
 const chartConfig: ChartConfig = {
   desktop: {
     label: "Desktop",
@@ -69,8 +45,8 @@ const chartConfig: ChartConfig = {
 }
 
 export function InsuredCountChart({ company }: InsuredCountChartProps) {
+  const { chartData, periodSummary, name, url, finalCount } = company
   const [env] = useAtom(envAtom)
-  const { name, url, insuredCounts, finalCount } = company
   const shareUrl = `${env?.APP_URL}/search/?q=${company.corporateNumber}`
 
   const handleCopyLink = async () => {
@@ -83,14 +59,7 @@ export function InsuredCountChart({ company }: InsuredCountChartProps) {
     }
   }
 
-  const sortedCounts = [...insuredCounts].sort(
-    (a, b) => new Date(a.countDate).getTime() - new Date(b.countDate).getTime()
-  )
-
-  const periodSummary = calculatePeriodSummary(sortedCounts)
   const variant = getVariantFromPercentChange(periodSummary.percentChange)
-  const chartData = prepareChartData(sortedCounts)
-  const countDate = formatDate(insuredCounts[insuredCounts.length - 1]?.countDate)
   const gradientId = `fillDesktop-${variant}`
 
   return (
@@ -98,10 +67,10 @@ export function InsuredCountChart({ company }: InsuredCountChartProps) {
       <CardHeader className="px-3 py-2.5">
         <div className="flex items-center justify-end space-x-2">
           <MenuRoot>
-            <div className="flex mx-auto text-left justify-start ml-0">
+            <div className="mx-auto ml-0 flex justify-start text-left">
               <Badge variant="default" size="sm" className="h-6 text-foreground-light text-xs">
                 <div className="flex items-center">
-                  <Building className="size-5 mr-2 text-foreground-muted" />
+                  <Building className="mr-2 size-5 text-foreground-muted" />
                   {company.corporateNumber}
                 </div>
               </Badge>
@@ -137,7 +106,7 @@ export function InsuredCountChart({ company }: InsuredCountChartProps) {
           />
         </div>
       </CardHeader>
-      <Separator className="!h-[0.5px]"/>
+      <Separator className="!h-[0.5px]" />
 
       <CardContent className="px-0 pt-4 pb-2">
         <div className="space-y-1.5 px-5 pb-4">
@@ -163,7 +132,9 @@ export function InsuredCountChart({ company }: InsuredCountChartProps) {
               percentage={Number(periodSummary.percentChange.toFixed(2))}
               value={periodSummary.countChange}
             />
-            <span className="text-foreground-light text-xs">{countDate}</span>
+            <span className="text-foreground-light text-xs">
+              {chartData[chartData.length - 1].countDate}
+            </span>
             <Tooltip
               className="w-64 text-xs"
               content={

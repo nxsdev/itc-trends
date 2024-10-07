@@ -7,7 +7,7 @@ import {
   PaginationLink,
 } from "~/components/ui/pagination"
 import { useEarlyScroll } from "~/hooks/use-early-scroll"
-import { sortSearchParams } from "./utils"
+import { sortSearchParams } from "../utils"
 interface SearchPaginationProps {
   limit: number
   totalCount: number

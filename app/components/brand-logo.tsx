@@ -1,16 +1,17 @@
 import type React from "react"
-import { useTheme } from "remix-themes"
+import { Theme, useTheme } from "remix-themes"
+import theme from "tailwindcss/defaultTheme"
 
 interface BrandLogoProps {
   width?: number
   className?: string
+  theme?: Theme
 }
 
-export const BrandLogo: React.FC<BrandLogoProps> = ({ width = 109, className }) => {
-  const [theme] = useTheme()
+export const BrandLogo: React.FC<BrandLogoProps> = ({ width = 109, className, theme }) => {
   const aspectRatio = 806.2826 / 141.732
   const height = width / aspectRatio
-  const textColor = theme === "dark" ? "#FAFAFA" : "#171717"
+  const textColor = theme === Theme.DARK ? "#FAFAFA" : "#171717"
 
   return (
     <svg

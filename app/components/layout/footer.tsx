@@ -1,10 +1,11 @@
 import { Link } from "@remix-run/react"
 import { Facebook, Instagram, Linkedin, X, Youtube } from "lucide-react"
 import React from "react"
+import { Theme } from "remix-themes"
 import { XIcon } from "~/components/icons/x-icon"
 import { BrandLogo } from "../brand-logo"
 
-const Footer = () => {
+const Footer = ({ theme }: { theme: Theme }) => {
   return (
     <footer className=" py-8">
       <div className="h-px w-full bg-gradient-to-r from-transparent via-border to-transparent" />
@@ -13,7 +14,7 @@ const Footer = () => {
         <div className="flex flex-col space-y-8 lg:flex-row lg:items-start lg:justify-between lg:space-y-0">
           <div className="flex flex-col items-start space-y-4">
             <div className="flex items-center gap-2">
-              <BrandLogo width={128} />
+              <BrandLogo width={128} theme={theme === Theme.LIGHT ? Theme.LIGHT : Theme.DARK} />
             </div>
             <div className="flex space-x-4">
               <a

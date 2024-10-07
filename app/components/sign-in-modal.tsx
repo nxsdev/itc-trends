@@ -1,6 +1,7 @@
 import { Link } from "@remix-run/react"
 import type * as React from "react"
 import { RiGithubLine, RiGoogleLine, RiTwitterXLine } from "react-icons/ri"
+import { Theme, useTheme } from "remix-themes"
 import { Button } from "~/components/ui/button"
 import { Dialog, DialogHeader, DialogRoot } from "~/components/ui/dialog"
 import type { AuthProvider } from "~/lib/supabase/auth.supabase.server"
@@ -17,13 +18,14 @@ export const SignInModal: React.FC<SignInModalProps> = ({
   description,
   onSignIn,
 }) => {
+  const [theme] = useTheme()
   return (
     <DialogRoot>
       {triggerButton}
       <Dialog>
         <DialogHeader>
           <div className="flex items-center justify-center gap-2">
-            <BrandLogo width={170} />
+            <BrandLogo width={170} theme={theme === Theme.LIGHT ? Theme.LIGHT : Theme.DARK} />
           </div>
           <div className="flex flex-col gap-2 pt-6 pb-2">
             <span className="text-foreground-light text-xs">{description}</span>

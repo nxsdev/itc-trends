@@ -91,7 +91,7 @@ export function App() {
         <Header />
         <Outlet />
         <Toaster />
-        <Footer />
+        <Footer theme={theme} />
         <ScrollRestoration />
         <Scripts />
       </body>

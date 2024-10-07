@@ -43,7 +43,10 @@ export function Header() {
         <div className="mr-4 flex items-center">
           <Link to="/" className="flex items-center space-x-2">
             <span className="block">
-              <BrandLogo width={115} />
+              <BrandLogo
+                width={115}
+                theme={!isSystemTheme && theme === Theme.LIGHT ? Theme.LIGHT : Theme.DARK}
+              />
             </span>
           </Link>
         </div>

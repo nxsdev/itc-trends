@@ -1,17 +1,15 @@
 import { useAsyncError } from "@remix-run/react"
-import { use } from "react"
 import { InsuredCountChart } from "./insured-count-chart"
 
+import type { CompanyChart } from "../types"
 import { EmptyData } from "./empty-data"
 import { SkeletonCard } from "./skeleton-card"
-import type { CompanyChart } from "./types"
 
 type CompanyListProps = {
-  companiesPromise: Promise<CompanyChart[]>
+  companies: CompanyChart[]
 }
 
-export function CompanyList({ companiesPromise }: CompanyListProps) {
-  const companies = use(companiesPromise)
+export function CompanyList({ companies }: CompanyListProps) {
   // データの存在を確認
   if (!companies || !Array.isArray(companies)) {
     return <ErrorBoundary />

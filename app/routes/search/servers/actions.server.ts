@@ -1,7 +1,7 @@
 import { AppLoadContext } from "@remix-run/cloudflare"
 import { AuthProvider, signInWithProvider, signOut } from "~/lib/supabase/auth.supabase.server"
 import { BadRequestError } from "~/lib/utils/errors"
-import { addOrRemoveFavorite } from "./_queries.server"
+import { addOrRemoveFavorite } from "./commands.server"
 import { scrapeCompanyData } from "./scrape.server"
 
 /**

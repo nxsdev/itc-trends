@@ -22,13 +22,13 @@ import { useMediaQuery } from "~/hooks/use-media-query"
 import { createSupabaseClient } from "~/lib/supabase/client.server"
 import { handleError } from "~/lib/utils/error-handler"
 import { BadRequestError } from "~/lib/utils/errors"
-import { handleFavorite, handleScrape, handleSignIn, handleSignOut } from "./_actionts.server"
-import { getCompanies } from "./_queries.server"
-import { CompanyList, ErrorBoundary, LoadingSkeleton } from "./company-list"
+import { CompanyList, ErrorBoundary, LoadingSkeleton } from "./components/company-list"
+import { FilterButton } from "./components/filter-button"
+import { SearchPagination } from "./components/search-pagination"
 import { ACTIONS } from "./constants"
-import { FilterButton } from "./filter-button"
 import { parseURLParams } from "./schema"
-import { SearchPagination } from "./search-pagination"
+import { handleFavorite, handleScrape, handleSignIn, handleSignOut } from "./servers/actions.server"
+import { getCompanies } from "./servers/queries.server"
 import { SortOption, type SortOptionValue } from "./types"
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
@@ -189,15 +189,16 @@ export default function Search() {
         </SelectRoot>
       </div>
 
-      <Suspense fallback={<LoadingSkeleton />} key={key}>
-        <CompanyList companiesPromise={companies} />
-      </Suspense>
-      <Suspense>
-        <Await resolve={companies}>
-          {(resolvedCompanies) => (
-            <SearchPagination limit={limit} totalCount={resolvedCompanies[0]?.totalCount ?? 0} />
+      <Suspense fallback={<LoadingSkeleton />}>
+        <Await
+          resolve={companies}
+          children={(resolvedCompanies) => (
+            <>
+              <CompanyList companies={resolvedCompanies} />
+              <SearchPagination limit={limit} totalCount={resolvedCompanies[0]?.totalCount ?? 0} />
+            </>
           )}
-        </Await>
+        />
       </Suspense>
       {/* <Outlet context={{ isModalOpen, onCloseModal: handleCloseModal }} /> */}
     </main>

@@ -1,4 +1,7 @@
+import { AppLoadContext } from "@remix-run/cloudflare"
 import type { User } from "@supabase/supabase-js"
+import { format } from "date-fns"
+import { ja } from "date-fns/locale"
 import {
   type SQL,
   and,
@@ -14,30 +17,13 @@ import {
   or,
   sql,
 } from "drizzle-orm"
-import {
-  type Company,
-  type InsuredCount,
-  companies,
-  favorites,
-  findy,
-  insuredCounts,
-} from "~/../schema"
-import { createSupabaseClient } from "~/lib/supabase/client.server"
-import { URLParams } from "./schema"
-import {
-  type CompanyChart,
-  FavoriteAction,
-  type FavoriteResult,
-  type LimitOption,
-  SortOption,
-  type URLParamsType,
-} from "./types"
-import { AppLoadContext } from "@remix-run/cloudflare"
+import { companies, favorites, findy, insuredCounts } from "~/../schema"
+import { type CompanyChart, type LimitOption, SortOption, type URLParamsType } from "../types"
 
 export async function getCompanies(
   context: AppLoadContext,
   params: Partial<URLParamsType>,
-  user?: User,
+  user?: User
 ): Promise<CompanyChart[]> {
   const { page, q, sort, exclude_inactive: excludeInactive, min_count, max_count, limit } = params
   // await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -156,91 +142,37 @@ export async function getCompanies(
 
     return companiesWithCounts.map((company): CompanyChart => {
       const companyInsuredCounts = insuredCountsData.filter((ic) => ic.companyId === company.id)
-      const initialCount = company.initialCount ?? 0
-      const finalCount = company.finalCount ?? 0
-      const totalCount = company.totalCount ?? 0
+      const initialCount = Number(company.initialCount) ?? 0
+      const finalCount = Number(company.finalCount) ?? 0
+      const totalCount = Number(company.totalCount) ?? 0
+      const countChange = finalCount - initialCount
+      const percentChange = initialCount !== 0 ? (countChange / initialCount) * 100 : 0
+
       return {
         ...company,
         insuredCounts: companyInsuredCounts,
-        initialCount: Number(initialCount),
-        finalCount: Number(finalCount),
-        totalCount: Number(totalCount),
+        initialCount,
+        finalCount,
+        totalCount,
         isFavorite: Boolean(company.isFavorite),
+        periodSummary: {
+          initialCount,
+          finalCount,
+          countChange,
+          percentChange,
+        },
+        chartData: companyInsuredCounts.map((count) => {
+          const date = new Date(count.countDate)
+          return {
+            month: format(date, "M月", { locale: ja }),
+            insuredCount: count.insuredCount,
+            countDate: format(date, "yyyy年M月d日", { locale: ja }),
+          }
+        }),
       }
     })
   } catch (error) {
     console.error(error)
     return []
   }
-}
-
-export async function addOrRemoveFavorite(
-  request: Request,
-  context: AppLoadContext,
-  companyId: string,
-  favoriteCount: number
-): Promise<FavoriteResult> {
-  const { supabase } = createSupabaseClient(request, context)
-  const {
-    data: { session },
-    error,
-  } = await supabase.locals.getSession()
-  if (error) {
-    throw new Error(error.message)
-  }
-
-  const user = session?.user
-
-  if (!user) {
-    throw new Error("Failed to get user")
-  }
-
-  return await context.db.transaction(async (tx) => {
-    const userFavorites = await tx.query.favorites.findMany({
-      where: eq(favorites.userId, user.id),
-    })
-    const favorite = userFavorites.find((favorite) => favorite.companyId === companyId)
-
-    let action: FavoriteAction
-    let message: string | undefined
-
-    if (favorite) {
-      // お気に入りを削除
-      await tx.delete(favorites).where(eq(favorites.id, favorite.id))
-      action = FavoriteAction.Removed
-      message = "お気に入り登録を解除しました"
-    } else {
-      if (userFavorites.length >= 6 && user.app_metadata.plan === "free") {
-        // 制限に達した場合、追加せずに早期リターン
-        return {
-          action: FavoriteAction.NoChange,
-          favoriteCount: favoriteCount,
-          message:
-            "フリープランでは最大6件まで登録できます",
-        }
-      }
-      await tx.insert(favorites).values({ userId: user.id, companyId })
-      action = FavoriteAction.Added
-      message = "お気に入りに追加しました"
-    }
-
-    // companiesテーブルのfavoriteCountを更新（NoChangeの場合は実行されない）
-    const [updatedCompany] = await tx
-      .update(companies)
-      .set({
-        favoriteCount: sql`${companies.favoriteCount} ${sql.raw(
-          action === FavoriteAction.Added ? "+" : "-"
-        )} 1`,
-      })
-      .where(eq(companies.id, companyId))
-      .returning({
-        favoriteCount: companies.favoriteCount,
-      })
-
-    return {
-      action,
-      favoriteCount: updatedCompany.favoriteCount,
-      message,
-    }
-  })
 }
