@@ -24,7 +24,6 @@ import { handleError } from "~/lib/utils/error-handler"
 import { BadRequestError } from "~/lib/utils/errors"
 import { CompanyList, ErrorBoundary, LoadingSkeleton } from "./components/company-list"
 import { FilterButton } from "./components/filter-button"
-import { SearchPagination } from "./components/search-pagination"
 import { ACTIONS } from "./constants"
 import { parseURLParams } from "./schema"
 import { handleFavorite, handleScrape, handleSignIn, handleSignOut } from "./servers/actions.server"
@@ -189,16 +188,8 @@ export default function Search() {
         </SelectRoot>
       </div>
 
-      <Suspense fallback={<LoadingSkeleton />}>
-        <Await
-          resolve={companies}
-          children={(resolvedCompanies) => (
-            <>
-              <CompanyList companies={resolvedCompanies} />
-              <SearchPagination limit={limit} totalCount={resolvedCompanies[0]?.totalCount ?? 0} />
-            </>
-          )}
-        />
+      <Suspense fallback={<LoadingSkeleton />} key={key}>
+        <CompanyList companiesPromise={companies} />
       </Suspense>
       {/* <Outlet context={{ isModalOpen, onCloseModal: handleCloseModal }} /> */}
     </main>

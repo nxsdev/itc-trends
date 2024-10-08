@@ -26,7 +26,7 @@ export async function getCompanies(
   user?: User
 ): Promise<CompanyChart[]> {
   const { page, q, sort, exclude_inactive: excludeInactive, min_count, max_count, limit } = params
-  // await new Promise((resolve) => setTimeout(resolve, 1000))
+  // await new Promise((resolve) => setTimeout(resolve, 2000))
   console.log(page, q, sort, excludeInactive, min_count, max_count, limit)
 
   try {

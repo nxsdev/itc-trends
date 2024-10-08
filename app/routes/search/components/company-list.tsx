@@ -1,38 +1,36 @@
 import { useAsyncError } from "@remix-run/react"
 import { InsuredCountChart } from "./insured-count-chart"
 
+import { use } from "react"
 import type { CompanyChart } from "../types"
 import { EmptyData } from "./empty-data"
+import { SearchPagination } from "./search-pagination"
 import { SkeletonCard } from "./skeleton-card"
 
 type CompanyListProps = {
-  companies: CompanyChart[]
+  companiesPromise: Promise<CompanyChart[]>
 }
 
-export function CompanyList({ companies }: CompanyListProps) {
+export function CompanyList({ companiesPromise }: CompanyListProps) {
+  const companies = use(companiesPromise)
   // データの存在を確認
   if (!companies || !Array.isArray(companies)) {
     return <ErrorBoundary />
   }
 
-  return <CompanyGrid companies={companies} />
-}
-
-function CompanyGrid({ companies }: { companies: CompanyChart[] }) {
   if (companies.length === 0) {
-    return (
-      <div className="col-span-full flex min-h-[300px] items-center justify-center">
-        <EmptyData />
-      </div>
-    )
+    return <EmptyData />
   }
 
   return (
-    <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {companies.map((company) => (
-        <InsuredCountChart key={company.id} company={company} />
-      ))}
-    </div>
+    <>
+      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {companies.map((company) => (
+          <InsuredCountChart key={company.id} company={company} />
+        ))}
+      </div>
+      <SearchPagination limit={12} totalCount={companies[0]?.totalCount ?? 0} />
+    </>
   )
 }
 

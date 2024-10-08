@@ -93,7 +93,7 @@ export function FilterButton() {
     if (currentPage && currentPage !== "1") {
       newParams.set("page", "1")
       toast.info("ページがリセットされました", {
-        description: "フィルターが変更されたため、1ページ目に戻ります。",
+        description: "フィルターが変更されたため、1ページ目に戻ります",
       })
     }
     console.log("newParams", newParams)
