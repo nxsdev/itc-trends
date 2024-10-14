@@ -1,7 +1,9 @@
+import { devErrorBoundary } from "@metronome-sh/dev-error-boundary"
 import {
   vitePlugin as remix,
   cloudflareDevProxyVitePlugin as remixCloudflareDevProxy,
 } from "@remix-run/dev"
+import { installGlobals } from "@remix-run/node"
 import { remixDevTools } from "remix-development-tools"
 import { type DefineRoutesFunction, flatRoutes } from "remix-flat-routes"
 import { defineConfig } from "vite"
@@ -15,6 +17,8 @@ declare module "@remix-run/server-runtime" {
   }
 }
 
+installGlobals()
+
 export default defineConfig({
   plugins: [
     // remixDevTools(),
@@ -24,8 +28,7 @@ export default defineConfig({
         v3_fetcherPersist: true,
         v3_relativeSplatPath: true,
         v3_throwAbortReason: true,
-        unstable_singleFetch: true,
-        unstable_lazyRouteDiscovery: true,
+        v3_lazyRouteDiscovery: true,
         unstable_optimizeDeps: true,
       },
       // Flat routes configuration
@@ -38,13 +41,14 @@ export default defineConfig({
       // default remix convention from picking up routes
       ignoredRouteFiles: ["**/*"],
     }),
-    babel({
-      filter: /\.[jt]sx?$/,
-      babelConfig: {
-        presets: ["@babel/preset-typescript"], // if you use TypeScript
-        plugins: ["babel-plugin-react-compiler"],
-      },
-    }),
+    // babel({
+    //   filter: /\.[jt]sx?$/,
+    //   babelConfig: {
+    //     presets: ["@babel/preset-typescript"], // if you use TypeScript
+    //     plugins: ["babel-plugin-react-compiler"],
+    //   },
+    // }),
     tsconfigPaths(),
+    devErrorBoundary(),
   ],
 })

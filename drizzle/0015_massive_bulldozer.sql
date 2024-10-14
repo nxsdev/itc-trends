@@ -1,0 +1,1 @@
+ALTER TABLE "company_registration_requests" ALTER COLUMN "company_id" SET DATA TYPE uuid;

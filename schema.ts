@@ -314,12 +314,12 @@ export const companyRegistrationRequests = pgTable(
     userId: text("user_id").notNull(),
     corporateNumber: text("corporate_number").notNull(),
     registeredAt: timestamp("registered_at").defaultNow().notNull(),
-    companyId: integer("company_id").references(() => companies.id),
+    companyId: uuid("company_id").references(() => companies.id),
   },
   (table) => {
     return {
       corporateNumberIdx: unique().on(table.corporateNumber),
-      userIdIdx: index("user_id_idx").on(table.userId),
+      userIdIdx: index().on(table.userId),
     }
   }
 )

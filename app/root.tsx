@@ -3,7 +3,10 @@ import "./tailwind.css"
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/cloudflare"
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react"
 import { clsx } from "clsx"
+import { Provider, createStore } from "jotai"
 import { PreventFlashOnWrongTheme, Theme, ThemeProvider, useTheme } from "remix-themes"
+import { envAtom } from "~/atoms/env-atom"
+import { userAtom } from "~/atoms/user-atom"
 import { Header } from "~/components/layout/header"
 import { Toaster } from "~/components/ui/sonner"
 import Footer from "./components/layout/footer"
@@ -18,15 +21,25 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   return {
     theme: getTheme(),
     user,
+    ENV: {
+      APP_URL: context.cloudflare.env.APP_URL,
+    },
   }
 }
 
 // `themeAction` is the action name that's used to change the theme in the session storage.
 export default function AppWithProviders() {
   const data = useLoaderData<typeof loader>()
+  const { user } = useLoaderData<typeof loader>()
+  const store = createStore()
+  store.set(userAtom, user ?? null)
+  store.set(envAtom, data.ENV)
 
   return (
     <ThemeProvider specifiedTheme={data.theme} themeAction="/action/set-theme">
+      <Provider store={store}>
+        <App />
+      </Provider>
       <App />
     </ThemeProvider>
   )

@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS "company_registration_requests" (
 	"user_id" text NOT NULL,
 	"corporate_number" text NOT NULL,
 	"registered_at" timestamp DEFAULT now() NOT NULL,
-	"company_id" integer,
+	"company_id" uuid,
 	CONSTRAINT "company_registration_requests_corporate_number_unique" UNIQUE("corporate_number")
 );
 --> statement-breakpoint
