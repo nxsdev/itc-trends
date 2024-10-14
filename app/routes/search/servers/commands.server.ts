@@ -1,8 +1,8 @@
 import { AppLoadContext } from "@remix-run/cloudflare"
 import { eq, sql } from "drizzle-orm"
 import { companies, favorites } from "~/../schema"
-import { createSupabaseClient } from "~/lib/supabase/client.server"
 import { AuthenticationError } from "~/lib/utils/errors"
+import { getAuthenticator } from "~/services/auth.server"
 import { FavoriteAction, type FavoriteResult } from "../types"
 
 export async function addOrRemoveFavorite(
@@ -11,16 +11,7 @@ export async function addOrRemoveFavorite(
   companyId: string,
   favoriteCount: number
 ): Promise<FavoriteResult> {
-  const { supabase } = createSupabaseClient(request, context)
-  const {
-    data: { session },
-    error,
-  } = await supabase.locals.getSession()
-  if (error) {
-    throw new AuthenticationError("セッションの取得に失敗しました")
-  }
-
-  const user = session?.user
+  const user = await getAuthenticator(context).isAuthenticated(request)
 
   if (!user) {
     throw new AuthenticationError("ユーザー情報の取得に失敗しました")
@@ -41,7 +32,7 @@ export async function addOrRemoveFavorite(
       action = FavoriteAction.Removed
       message = "お気に入り登録を解除しました"
     } else {
-      if (userFavorites.length >= 6 && user.app_metadata.plan === "free") {
+      if (userFavorites.length >= 6 && user.plan === "free") {
         // 制限に達した場合、追加せずに早期リターン
         return {
           action: FavoriteAction.NoChange,

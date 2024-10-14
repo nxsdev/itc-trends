@@ -1,23 +1,18 @@
-import { Link } from "@remix-run/react"
+import { Form, Link } from "@remix-run/react"
 import type * as React from "react"
 import { RiGithubLine, RiGoogleLine, RiTwitterXLine } from "react-icons/ri"
 import { Theme, useTheme } from "remix-themes"
 import { Button } from "~/components/ui/button"
 import { Dialog, DialogHeader, DialogRoot } from "~/components/ui/dialog"
-import type { AuthProvider } from "~/lib/supabase/auth.supabase.server"
+import { AUTH_PROVIDERS } from "~/types/auth"
 import { BrandLogo } from "./brand-logo"
 
 interface SignInModalProps {
   triggerButton: React.ReactNode
   description: string
-  onSignIn: (provider: AuthProvider) => void
 }
 
-export const SignInModal: React.FC<SignInModalProps> = ({
-  triggerButton,
-  description,
-  onSignIn,
-}) => {
+export const SignInModal: React.FC<SignInModalProps> = ({ triggerButton, description }) => {
   const [theme] = useTheme()
   return (
     <DialogRoot>
@@ -32,15 +27,21 @@ export const SignInModal: React.FC<SignInModalProps> = ({
           </div>
         </DialogHeader>
         <div className="flex flex-col gap-2">
-          <Button prefix={<RiGithubLine />} className="h-10" onPress={() => onSignIn("github")}>
-            GitHubでサインイン・新規登録
-          </Button>
-          <Button prefix={<RiGoogleLine />} className="h-10" onPress={() => onSignIn("google")}>
-            Googleでサインイン・新規登録
-          </Button>
-          <Button prefix={<RiTwitterXLine />} className="h-10" onPress={() => onSignIn("twitter")}>
-            X(Twitter)でサインイン・新規登録
-          </Button>
+          <Form method="post" action={`/auth/${AUTH_PROVIDERS.GITHUB}`}>
+            <Button type="submit" prefix={<RiGithubLine />} className="h-10 w-full">
+              GitHubでサインイン・新規登録
+            </Button>
+          </Form>
+          <Form method="post" action={`/auth/${AUTH_PROVIDERS.GOOGLE}`}>
+            <Button type="submit" prefix={<RiGoogleLine />} className="h-10 w-full">
+              Googleでサインイン・新規登録
+            </Button>
+          </Form>
+          <Form method="post" action={`/auth/${AUTH_PROVIDERS.TWITTER}`}>
+            <Button type="submit" prefix={<RiTwitterXLine />} className="h-10 w-full">
+              X(Twitter)でサインイン・新規登録
+            </Button>
+          </Form>
         </div>
         <p className="py-4 text-center text-foreground-light text-xs">
           続行すると、

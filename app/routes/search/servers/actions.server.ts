@@ -1,27 +1,9 @@
 import { AppLoadContext } from "@remix-run/cloudflare"
-import { AuthProvider, signInWithProvider, signOut } from "~/lib/supabase/auth.supabase.server"
 import { BadRequestError } from "~/lib/utils/errors"
+import { getAuthenticator } from "~/services/auth.server"
+import { AuthProvider } from "~/types/auth"
 import { addOrRemoveFavorite } from "./commands.server"
 import { scrapeCompanyData } from "./scrape.server"
-
-/**
- * ユーザーのサインイン処理を行います。
- */
-export async function handleSignIn(request: Request, context: AppLoadContext) {
-  const formData = await request.formData()
-  const provider = formData.get("provider") as AuthProvider | null
-  if (!provider) {
-    throw new BadRequestError("Provider is required")
-  }
-  return await signInWithProvider(request, context, provider)
-}
-
-/**
- * ユーザーのサインアウト処理を行います。
- */
-export async function handleSignOut(request: Request, context: AppLoadContext) {
-  return await signOut(request, context)
-}
 
 /**
  * 会社のお気に入り状態を切り替えます。

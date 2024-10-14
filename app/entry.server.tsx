@@ -4,10 +4,16 @@
  * For more information, see https://remix.run/file-conventions/entry.server
  */
 
-import type { AppLoadContext, EntryContext } from "@remix-run/cloudflare";
-import { RemixServer } from "@remix-run/react";
-import { isbot } from "isbot";
-import { renderToReadableStream } from "react-dom/server";
+import type {
+  ActionFunctionArgs,
+  AppLoadContext,
+  EntryContext,
+  LoaderFunctionArgs,
+} from "@remix-run/cloudflare"
+import { RemixServer } from "@remix-run/react"
+import * as Sentry from "@sentry/cloudflare"
+import { isbot } from "isbot"
+import { renderToReadableStream } from "react-dom/server"
 
 export default async function handleRequest(
   request: Request,
@@ -25,19 +31,55 @@ export default async function handleRequest(
       signal: request.signal,
       onError(error: unknown) {
         // Log streaming rendering errors from inside the shell
-        console.error(error);
-        responseStatusCode = 500;
+        console.error(error)
+        responseStatusCode = 500
       },
     }
-  );
+  )
 
   if (isbot(request.headers.get("user-agent") || "")) {
-    await body.allReady;
+    await body.allReady
   }
 
-  responseHeaders.set("Content-Type", "text/html");
+  responseHeaders.set("Content-Type", "text/html")
   return new Response(body, {
     headers: responseHeaders,
     status: responseStatusCode,
-  });
+  })
 }
+
+// export function handleError(
+//   error: unknown,
+//   { request, params, context }: LoaderFunctionArgs | ActionFunctionArgs
+// ) {
+//   if (!request.signal.aborted) {
+//     Sentry.captureException(error, {
+//       contexts: {
+//         request: {
+//           url: request.url,
+//           method: request.method,
+//           headers: {
+//             "user-agent": request.headers.get("User-Agent"),
+//             referer: request.headers.get("Referer"),
+//             "accept-language": request.headers.get("Accept-Language"),
+//           },
+//           cf: request.cf,
+//         },
+//         params,
+//         customContext: context,
+//       },
+//       tags: {
+//         route: new URL(request.url).pathname,
+//         environment: context.cloudflare.env.ENVIRONMENT || "development",
+//       },
+//       user: {
+//         ip_address:
+//           request.headers.get("X-Forwarded-For") ||
+//           request.headers.get("CF-Connecting-IP") ||
+//           undefined,
+//       },
+//     })
+
+//     console.error(error)
+//   }
+// }

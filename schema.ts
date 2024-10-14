@@ -18,26 +18,14 @@ import {
 import { pgEnum, pgSchema } from "drizzle-orm/pg-core"
 import { createInsertSchema, createSelectSchema } from "drizzle-valibot"
 import * as v from "valibot"
-// Auth schema definition
-const authSchema = pgSchema("auth")
-
-// Users table in auth schema
-export const users = authSchema.table("users", {
-  id: uuid("id").primaryKey(),
-  // Other fields from Supabase auth.users table can be added here if needed
-})
-
-export type User = typeof users.$inferSelect
 
 export const planType = pgEnum("plan_type", ["free", "pro", "lifetime", "vip"])
 
 export type PlanType = (typeof planType.enumValues)[number]
 
 /** ユーザーのプロフィール */
-export const profile = pgTable("profile", {
-  id: uuid("id")
-    .primaryKey()
-    .references(() => users.id, { onDelete: "cascade" }),
+export const users = pgTable("users", {
+  id: uuid("id").primaryKey(),
   email: text("email"),
   username: text("username"),
   fullName: text("full_name"),
@@ -49,14 +37,9 @@ export const profile = pgTable("profile", {
     .defaultNow()
     .$onUpdate(() => new Date()),
 })
-export type Profile = typeof profile.$inferSelect
 
-export const profileRelations = relations(profile, ({ one }) => ({
-  user: one(users, {
-    fields: [profile.id],
-    references: [users.id],
-  }),
-}))
+export type User = typeof users.$inferSelect
+export type NewUser = typeof users.$inferInsert
 
 export const companies = pgTable("companies", {
   id: uuid("id").defaultRandom().primaryKey(),

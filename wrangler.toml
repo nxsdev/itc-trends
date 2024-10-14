@@ -67,13 +67,32 @@ pages_build_output_dir = "./build/client"
 # Docs: https://developers.cloudflare.com/pages/functions/wrangler-configuration#environment-specific-overrides
 
 [vars]
-ENV = "development"
-DATABASE_URL = "postgresql://postgres:postgres@127.0.0.1:54322/postgres"
+ENVIRONMENT = "local"
+APP_URL = "http://localhost:5173"
+DATABASE_URL = ""
+SENTRY_DSN = ""
+GITHUB_CLIENT_ID = ""
+GITHUB_CLIENT_SECRET = ""
+GOOGLE_CLIENT_ID = ""
+GOOGLE_CLIENT_SECRET = ""
+TWITTER_CLIENT_ID = ""
+TWITTER_CLIENT_SECRET = ""
+SESSION_SECRET = ""
 
 ######## PREVIEW environment config ########
 
 [env.preview.vars]
-ENV = "preview"
+ENVIRONMENT = "preview"
+DATABASE_URL = ""
+SENTRY_DSN = ""
+GITHUB_CLIENT_ID = ""
+GITHUB_CLIENT_SECRET = ""
+GOOGLE_CLIENT_ID = ""
+GOOGLE_CLIENT_SECRET = ""
+TWITTER_CLIENT_ID = ""
+TWITTER_CLIENT_SECRET = ""
+SESSION_SECRET = ""
+
 # API_KEY = "xyz789"
 
 # [[env.preview.kv_namespaces]]
@@ -83,8 +102,16 @@ ENV = "preview"
 ######## PRODUCTION environment config ########
 
 [env.production.vars]
-ENV = "production"
-# API_KEY = "abc123"
+ENVIRONMENT = "production"
+DATABASE_URL = ""
+SENTRY_DSN = ""
+GITHUB_CLIENT_ID = ""
+GITHUB_CLIENT_SECRET = ""
+GOOGLE_CLIENT_ID = ""
+GOOGLE_CLIENT_SECRET = ""
+TWITTER_CLIENT_ID = ""
+TWITTER_CLIENT_SECRET = ""
+SESSION_SECRET = ""
 
 # [[env.production.kv_namespaces]]
 # binding = "MY_KV_NAMESPACE"

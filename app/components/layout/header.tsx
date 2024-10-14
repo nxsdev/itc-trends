@@ -1,13 +1,13 @@
 import { Link, useFetcher } from "@remix-run/react"
 import { History, Home, LogOut, MenuIcon, Search } from "lucide-react"
 import { Theme, useTheme } from "remix-themes"
+import { User } from "schema"
 import { SignInModal } from "~/components/sign-in-modal"
 import { Button, buttonStyles } from "~/components/ui/button"
 import { Menu, MenuItem, MenuRoot } from "~/components/ui/menu"
 import { useMediaQuery } from "~/hooks/use-media-query"
-import { useUser, useUserFull } from "~/hooks/use-user"
-import type { AuthProvider } from "~/lib/supabase/auth.supabase.server"
 import { cn } from "~/lib/utils"
+import { AuthProvider } from "~/types/auth"
 import { BrandLogo } from "../brand-logo"
 import { SuccessIcon } from "../icons/success-icon"
 import { RequestModal } from "../request-modal"
@@ -16,8 +16,11 @@ import { Badge } from "../ui/badge"
 import { Section, SectionRoot, SectionTitle } from "../ui/section"
 import { Separator } from "../ui/separator"
 
-export function Header() {
-  const user = useUser()
+interface HeaderProps {
+  user: User | null
+}
+
+export function Header({ user }: HeaderProps) {
   const [theme, setTheme, { definedBy }] = useTheme()
   const fetcher = useFetcher()
 
@@ -95,18 +98,14 @@ export function Header() {
                     <div className="flex items-center">
                       <Avatar>
                         <AvatarImage
-                          src={user.user_metadata.avatar_url}
-                          alt={user.user_metadata.full_name}
+                          src={user.avatarUrl ?? ""}
+                          alt={user.fullName ?? ""}
                           loading="eager"
                         />
-                        <AvatarFallback>
-                          {user.user_metadata.full_name?.charAt(0) || "U"}
-                        </AvatarFallback>
+                        <AvatarFallback>{user.fullName?.charAt(0) || "U"}</AvatarFallback>
                       </Avatar>
                       <div className="flex flex-col space-y-1 pl-2">
-                        <p className="font-medium text-sm leading-none">
-                          {user.user_metadata.full_name}
-                        </p>
+                        <p className="font-medium text-sm leading-none">{user.fullName ?? ""}</p>
                         <p className="text-foreground-light text-xs leading-none">{user.email}</p>
                       </div>
                     </div>

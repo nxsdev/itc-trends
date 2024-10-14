@@ -3,48 +3,31 @@ import "./tailwind.css"
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/cloudflare"
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react"
 import { clsx } from "clsx"
-import { Provider, createStore } from "jotai"
-import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes"
-import { envAtom } from "~/atoms/env-atom"
-import { userAtom } from "~/atoms/user-atom"
+import { PreventFlashOnWrongTheme, Theme, ThemeProvider, useTheme } from "remix-themes"
 import { Header } from "~/components/layout/header"
 import { Toaster } from "~/components/ui/sonner"
-import { createSupabaseClient } from "~/lib/supabase/client.server"
 import Footer from "./components/layout/footer"
+import { getAuthenticatedUser } from "./services/auth.server"
 import { themeSessionResolver } from "./sessions.server"
 
 // Return the theme from the session storage using the loader
 export async function loader({ request, context }: LoaderFunctionArgs) {
   const { getTheme } = await themeSessionResolver(request)
-  const { supabase } = await createSupabaseClient(request, context)
-  const {
-    data: { session },
-  } = await supabase.locals.getSession()
+  const user = await getAuthenticatedUser(request, context)
 
   return {
     theme: getTheme(),
-    user: session?.user,
-    ENV: {
-      APP_URL: context.cloudflare.env.APP_URL || "",
-      SUPABASE_URL: context.cloudflare.env.SUPABASE_URL || "",
-      SUPABASE_ANON_KEY: context.cloudflare.env.SUPABASE_ANON_KEY || "",
-    },
+    user,
   }
 }
 
 // `themeAction` is the action name that's used to change the theme in the session storage.
 export default function AppWithProviders() {
   const data = useLoaderData<typeof loader>()
-  const { user } = useLoaderData<typeof loader>()
-  const store = createStore()
-  store.set(userAtom, user ?? null)
-  store.set(envAtom, data.ENV)
 
   return (
     <ThemeProvider specifiedTheme={data.theme} themeAction="/action/set-theme">
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <App />
     </ThemeProvider>
   )
 }
@@ -74,7 +57,9 @@ export const meta: MetaFunction = () => {
 
 export function App() {
   const data = useLoaderData<typeof loader>()
-  const [theme] = useTheme()
+  const [theme, _, { definedBy }] = useTheme()
+
+  const isSystemTheme = definedBy === "SYSTEM"
 
   return (
     <html lang="ja" className={clsx(theme)}>
@@ -88,10 +73,10 @@ export function App() {
         <Links />
       </head>
       <body className="min-h-screen antialiased">
-        <Header />
+        <Header user={data.user} />
         <Outlet />
         <Toaster />
-        <Footer theme={theme} />
+        <Footer theme={!isSystemTheme && theme === Theme.LIGHT ? Theme.LIGHT : Theme.DARK} />
         <ScrollRestoration />
         <Scripts />
       </body>

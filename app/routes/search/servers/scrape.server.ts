@@ -3,13 +3,13 @@ import { and, eq, gte } from "drizzle-orm"
 import { HTMLRewriter } from "html-rewriter-wasm"
 import { companies, companyRegistrationRequests } from "~/../schema"
 import { db } from "~/lib/db"
-import { createSupabaseClient } from "~/lib/supabase/client.server"
 import {
   AppError,
   AuthenticationError,
   PaymentRequiredError,
   ValidationError,
 } from "~/lib/utils/errors"
+import { getAuthenticator } from "~/services/auth.server"
 
 function convertJapaneseDate(dateString: string): string {
   const japaneseEraMap: { [key: string]: number } = {
@@ -41,16 +41,10 @@ export async function scrapeCompanyData(
   corporateNumber: string,
   url?: string
 ): Promise<any> {
-  const { supabase } = createSupabaseClient(request, context)
-  const {
-    data: { session },
-    error,
-  } = await supabase.locals.getSession()
-  if (error || !session?.user) {
+  const user = await getAuthenticator(context).isAuthenticated(request)
+  if (!user) {
     throw new AuthenticationError("登録にはサインインが必要です。")
   }
-
-  const user = session.user
 
   // 現在の月の開始日を取得
   const currentMonthStart = new Date()
@@ -69,7 +63,7 @@ export async function scrapeCompanyData(
     )
 
   // プランに応じて登録を制限
-  const monthlyLimit = user.app_metadata.plan === "pro" ? 100 : 5
+  const monthlyLimit = user.plan === "pro" ? 100 : 5
   if (monthlyRegistrations.length >= monthlyLimit) {
     throw new PaymentRequiredError(`月間の登録制限（${monthlyLimit}件）に達しました。`)
   }

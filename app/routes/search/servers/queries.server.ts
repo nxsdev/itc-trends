@@ -1,5 +1,4 @@
 import { AppLoadContext } from "@remix-run/cloudflare"
-import type { User } from "@supabase/supabase-js"
 import { format } from "date-fns"
 import { ja } from "date-fns/locale"
 import {
@@ -17,13 +16,14 @@ import {
   or,
   sql,
 } from "drizzle-orm"
+import type { User } from "schema"
 import { companies, favorites, findy, insuredCounts } from "~/../schema"
 import { type CompanyChart, type LimitOption, SortOption, type URLParamsType } from "../types"
 
 export async function getCompanies(
   context: AppLoadContext,
   params: Partial<URLParamsType>,
-  user?: User
+  user?: User | null
 ): Promise<CompanyChart[]> {
   const { page, q, sort, exclude_inactive: excludeInactive, min_count, max_count, limit } = params
   // await new Promise((resolve) => setTimeout(resolve, 2000))

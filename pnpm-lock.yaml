@@ -46,6 +46,9 @@ importers:
       '@remix-run/server-runtime':
         specifier: ^2.12.1
         version: 2.12.1(typescript@5.6.2)
+      '@sentry/cloudflare':
+        specifier: ^8.34.0
+        version: 8.34.0
       '@supabase/ssr':
         specifier: ^0.5.1
         version: 0.5.1(@supabase/supabase-js@2.45.4)
@@ -127,6 +130,15 @@ importers:
       remix-auth:
         specifier: ^3.7.0
         version: 3.7.0(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2))
+      remix-auth-github:
+        specifier: ^2.0.0
+        version: 2.0.0(@remix-run/cloudflare@2.12.1(@cloudflare/workers-types@4.20241004.0)(typescript@5.6.2))(@remix-run/node@2.12.1(typescript@5.6.2))(remix-auth@3.7.0(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2)))
+      remix-auth-google:
+        specifier: ^2.0.0
+        version: 2.0.0(@remix-run/server-runtime@2.12.1(typescript@5.6.2))(remix-auth@3.7.0(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2)))
+      remix-auth-twitter:
+        specifier: ^2.1.0
+        version: 2.1.0(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2))
       remix-themes:
         specifier: ^1.5.1
         version: 1.5.1(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2))
@@ -1476,6 +1488,21 @@ packages:
   '@one-ini/wasm@0.1.1':
     resolution: {integrity: sha512-XuySG1E38YScSJoMlqovLru4KTUNSjgVTIjyh7qMX6aNN5HY5Ct5LhRJdxO79JtTzKfzV/bnWpz+zquYrISsvw==}
 
+  '@oslojs/asn1@0.2.3':
+    resolution: {integrity: sha512-cZOLRzKfv3JTxIzNTAoiN0+utB0is9cQOOp5Xq++SE8MtIXXDLFblZGFrHCdTXLGXvUZmopeB/dFZrkh5MpKqQ==}
+
+  '@oslojs/binary@0.4.0':
+    resolution: {integrity: sha512-xi1MOhP7t9TFV1nOmzG0qIdCXdFXbeMYskhfI5eakBlU8re/xO+qjdyiBO+hl+nK4z4lZWCDjlgH8BXUWQDWFw==}
+
+  '@oslojs/crypto@0.6.2':
+    resolution: {integrity: sha512-2y39MOLkkCvaBdi2TrBDtk7106fayDHRLz11K1/UvtW28VgL5/TbV/tPRTmSA5dhvQQqLYDJj3zsBkjeP+aD2w==}
+
+  '@oslojs/encoding@1.1.0':
+    resolution: {integrity: sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==}
+
+  '@oslojs/oauth2@0.5.0':
+    resolution: {integrity: sha512-t70+e4EgnzTbU4MrUWXzqWN2A6RJrlSSvwwuBv6E0Ap6/nsIXrjsdRWeTcSvvXTcC6fi0YdWaqEWLipcEm2Cgw==}
+
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
@@ -2773,6 +2800,22 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@sentry/cloudflare@8.34.0':
+    resolution: {integrity: sha512-xzZTcLn9XiUzUfrL5oULmSx1tMx+x+STPi8x27iMBZhjTBYJyxcW3Z5svSwY//nQkhPqKI8N/O58OfJLqID5XQ==}
+    engines: {node: '>=14.18'}
+
+  '@sentry/core@8.34.0':
+    resolution: {integrity: sha512-adrXCTK/zsg5pJ67lgtZqdqHvyx6etMjQW3P82NgWdj83c8fb+zH+K79Z47pD4zQjX0ou2Ws5nwwi4wJbz4bfA==}
+    engines: {node: '>=14.18'}
+
+  '@sentry/types@8.34.0':
+    resolution: {integrity: sha512-zLRc60CzohGCo6zNsNeQ9JF3SiEeRE4aDCP9fDDdIVCOKovS+mn1rtSip0qd0Vp2fidOu0+2yY0ALCz1A3PJSQ==}
+    engines: {node: '>=14.18'}
+
+  '@sentry/utils@8.34.0':
+    resolution: {integrity: sha512-W1KoRlFUjprlh3t86DZPFxLfM6mzjRzshVfMY7vRlJFymBelJsnJ3A1lPeBZM9nCraOSiw6GtOWu6k5BAkiGIg==}
+    engines: {node: '>=14.18'}
+
   '@supabase/auth-js@2.65.0':
     resolution: {integrity: sha512-+wboHfZufAE2Y612OsKeVP4rVOeGZzzMLD/Ac3HrTQkkY4qXNjI6Af9gtmxwccE5nFvTiF114FEbIQ1hRq5uUw==}
 
@@ -3333,6 +3376,9 @@ packages:
   cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
     engines: {node: '>= 8'}
+
+  crypto-js@4.2.0:
+    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
 
   css-what@6.1.0:
     resolution: {integrity: sha512-HTUrgRJ7r4dsZKU6GjmpfRK1O76h97Z8MfS1G0FozR+oF2kG6Vfe8JE6zwrkbxigziPHinCJ+gCPjA9EaBDtRw==}
@@ -5290,6 +5336,55 @@ packages:
   remark-rehype@11.1.1:
     resolution: {integrity: sha512-g/osARvjkBXb6Wo0XvAeXQohVta8i84ACbenPpoSsxTOQH/Ae0/RGP4WZgnMH5pMLpsj4FG7OHmcIcXxpza8eQ==}
 
+  remix-auth-github@2.0.0:
+    resolution: {integrity: sha512-xqFJ1lMQ1M6juOHlh1WNvwmgpRpcPBja0qDDZcqAHjSlSVWOoiq23rLBtmQav1VH5NojcuW9ejHtLwh/njuL5A==}
+    engines: {node: ^18.0.0 || ^20.0.0 || >=20.0.0}
+    peerDependencies:
+      '@remix-run/cloudflare': ^1.0.0 || ^2.0.0
+      '@remix-run/deno': ^1.0.0 || ^2.0.0
+      '@remix-run/node': ^1.0.0 || ^2.0.0
+      remix-auth: ^3.6.0
+    peerDependenciesMeta:
+      '@remix-run/cloudflare':
+        optional: true
+      '@remix-run/deno':
+        optional: true
+      '@remix-run/node':
+        optional: true
+
+  remix-auth-google@2.0.0:
+    resolution: {integrity: sha512-qP38N1ZJADz+HlH2lrEn/rSL6m5Dwcnz8xUFDhbHecDMl9FU/UpkUx3w8jj5XhNSnkSue/GWT+p7OEkatgbXNA==}
+    peerDependencies:
+      '@remix-run/server-runtime': ^2.0.1
+      remix-auth: ^3.2.1
+
+  remix-auth-oauth2@1.11.2:
+    resolution: {integrity: sha512-5ORP+LMi5CVCA/Wb8Z+FCAJ73Uiy4uyjEzhlVwNBfdAkPOnfxzoi+q/pY/CrueYv3OniCXRM35ZYqkVi3G1UPw==}
+    peerDependencies:
+      '@remix-run/server-runtime': ^1.0.0 || ^2.0.0
+      remix-auth: ^3.6.0
+
+  remix-auth-oauth2@2.4.0:
+    resolution: {integrity: sha512-lsUBvYispJ/MgVR45IYZjqJgYupefLTxEcSiDoP6X3NPn9PUDCDp8okB5aiXZHBCi0/qL6XYCEHRwNvBJaaENw==}
+    engines: {node: ^18.0.0 || ^20.0.0 || >=20.0.0}
+    peerDependencies:
+      '@remix-run/cloudflare': ^1.0.0 || ^2.0.0
+      '@remix-run/deno': ^1.0.0 || ^2.0.0
+      '@remix-run/node': ^1.0.0 || ^2.0.0
+      remix-auth: ^3.6.0
+    peerDependenciesMeta:
+      '@remix-run/cloudflare':
+        optional: true
+      '@remix-run/deno':
+        optional: true
+      '@remix-run/node':
+        optional: true
+
+  remix-auth-twitter@2.1.0:
+    resolution: {integrity: sha512-uoayITEtVJRYjBy9N9c14ahZrBnCr+LYzGTOqtD/yqM0qKRvylruqfUFA00DMJNSg3Zsy0qu41ko/DPzw64/hA==}
+    peerDependencies:
+      '@remix-run/server-runtime': ^1.19
+
   remix-auth@3.7.0:
     resolution: {integrity: sha512-2QVjp2nJVaYxuFBecMQwzixCO7CLSssttLBU5eVlNcNlVeNMmY1g7OkmZ1Ogw9sBcoMXZ18J7xXSK0AISVFcfQ==}
     peerDependencies:
@@ -5837,6 +5932,10 @@ packages:
 
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    hasBin: true
+
+  uuid@9.0.1:
+    resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
 
   uvu@0.5.6:
@@ -7037,6 +7136,21 @@ snapshots:
       which: 3.0.1
 
   '@one-ini/wasm@0.1.1': {}
+
+  '@oslojs/asn1@0.2.3':
+    dependencies:
+      '@oslojs/binary': 0.4.0
+
+  '@oslojs/binary@0.4.0': {}
+
+  '@oslojs/crypto@0.6.2':
+    dependencies:
+      '@oslojs/asn1': 0.2.3
+      '@oslojs/binary': 0.4.0
+
+  '@oslojs/encoding@1.1.0': {}
+
+  '@oslojs/oauth2@0.5.0': {}
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
@@ -8772,6 +8886,25 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.24.0':
     optional: true
 
+  '@sentry/cloudflare@8.34.0':
+    dependencies:
+      '@sentry/core': 8.34.0
+      '@sentry/types': 8.34.0
+      '@sentry/utils': 8.34.0
+    optionalDependencies:
+      '@cloudflare/workers-types': 4.20241004.0
+
+  '@sentry/core@8.34.0':
+    dependencies:
+      '@sentry/types': 8.34.0
+      '@sentry/utils': 8.34.0
+
+  '@sentry/types@8.34.0': {}
+
+  '@sentry/utils@8.34.0':
+    dependencies:
+      '@sentry/types': 8.34.0
+
   '@supabase/auth-js@2.65.0':
     dependencies:
       '@supabase/node-fetch': 2.6.15
@@ -9425,6 +9558,8 @@ snapshots:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+
+  crypto-js@4.2.0: {}
 
   css-what@6.1.0: {}
 
@@ -11884,6 +12019,57 @@ snapshots:
       unified: 11.0.5
       vfile: 6.0.3
 
+  remix-auth-github@2.0.0(@remix-run/cloudflare@2.12.1(@cloudflare/workers-types@4.20241004.0)(typescript@5.6.2))(@remix-run/node@2.12.1(typescript@5.6.2))(remix-auth@3.7.0(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2))):
+    dependencies:
+      remix-auth: 3.7.0(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2))
+      remix-auth-oauth2: 2.4.0(@remix-run/cloudflare@2.12.1(@cloudflare/workers-types@4.20241004.0)(typescript@5.6.2))(@remix-run/node@2.12.1(typescript@5.6.2))(remix-auth@3.7.0(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2)))
+    optionalDependencies:
+      '@remix-run/cloudflare': 2.12.1(@cloudflare/workers-types@4.20241004.0)(typescript@5.6.2)
+      '@remix-run/node': 2.12.1(typescript@5.6.2)
+    transitivePeerDependencies:
+      - supports-color
+
+  remix-auth-google@2.0.0(@remix-run/server-runtime@2.12.1(typescript@5.6.2))(remix-auth@3.7.0(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2))):
+    dependencies:
+      '@remix-run/server-runtime': 2.12.1(typescript@5.6.2)
+      remix-auth: 3.7.0(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2))
+      remix-auth-oauth2: 1.11.2(@remix-run/server-runtime@2.12.1(typescript@5.6.2))(remix-auth@3.7.0(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2)))
+    transitivePeerDependencies:
+      - supports-color
+
+  remix-auth-oauth2@1.11.2(@remix-run/server-runtime@2.12.1(typescript@5.6.2))(remix-auth@3.7.0(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2))):
+    dependencies:
+      '@remix-run/server-runtime': 2.12.1(typescript@5.6.2)
+      debug: 4.3.7
+      remix-auth: 3.7.0(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2))
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - supports-color
+
+  remix-auth-oauth2@2.4.0(@remix-run/cloudflare@2.12.1(@cloudflare/workers-types@4.20241004.0)(typescript@5.6.2))(@remix-run/node@2.12.1(typescript@5.6.2))(remix-auth@3.7.0(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2))):
+    dependencies:
+      '@oslojs/crypto': 0.6.2
+      '@oslojs/encoding': 1.1.0
+      '@oslojs/oauth2': 0.5.0
+      debug: 4.3.7
+      remix-auth: 3.7.0(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2))
+    optionalDependencies:
+      '@remix-run/cloudflare': 2.12.1(@cloudflare/workers-types@4.20241004.0)(typescript@5.6.2)
+      '@remix-run/node': 2.12.1(typescript@5.6.2)
+    transitivePeerDependencies:
+      - supports-color
+
+  remix-auth-twitter@2.1.0(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2)):
+    dependencies:
+      '@remix-run/server-runtime': 2.12.1(typescript@5.6.2)
+      crypto-js: 4.2.0
+      debug: 4.3.7
+      remix-auth: 3.7.0(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2))
+      uuid: 8.3.2
+    transitivePeerDependencies:
+      - '@remix-run/react'
+      - supports-color
+
   remix-auth@3.7.0(@remix-run/react@2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2))(@remix-run/server-runtime@2.12.1(typescript@5.6.2)):
     dependencies:
       '@remix-run/react': 2.12.1(react-dom@19.0.0-rc-1460d67c-20241003(react@19.0.0-rc-1460d67c-20241003))(react@19.0.0-rc-1460d67c-20241003)(typescript@5.6.2)
@@ -12492,6 +12678,8 @@ snapshots:
   utils-merge@1.0.1: {}
 
   uuid@8.3.2: {}
+
+  uuid@9.0.1: {}
 
   uvu@0.5.6:
     dependencies:

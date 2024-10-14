@@ -19,25 +19,22 @@ import { SearchField } from "~/components/ui/search-field"
 import { SelectRoot, SelectValue } from "~/components/ui/select"
 import { Tab, TabList, Tabs } from "~/components/ui/tabs"
 import { useMediaQuery } from "~/hooks/use-media-query"
-import { createSupabaseClient } from "~/lib/supabase/client.server"
 import { handleError } from "~/lib/utils/error-handler"
 import { BadRequestError } from "~/lib/utils/errors"
+import { getAuthenticator } from "~/services/auth.server"
 import { CompanyList, ErrorBoundary, LoadingSkeleton } from "./components/company-list"
 import { FilterButton } from "./components/filter-button"
 import { ACTIONS } from "./constants"
 import { parseURLParams } from "./schema"
-import { handleFavorite, handleScrape, handleSignIn, handleSignOut } from "./servers/actions.server"
+import { handleFavorite, handleScrape } from "./servers/actions.server"
 import { getCompanies } from "./servers/queries.server"
 import { SortOption, type SortOptionValue } from "./types"
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
-  // const { supabase, headers } = createSupabaseClient(request)
   const params = parseURLParams(request)
-  const { supabase } = await createSupabaseClient(request, context)
-  const {
-    data: { session },
-  } = await supabase.locals.getSession()
-  const companiesPromise = getCompanies(context, params, session?.user)
+  const authenticator = getAuthenticator(context)
+  const user = await authenticator.isAuthenticated(request)
+  const companiesPromise = getCompanies(context, params, user)
 
   return {
     key: Math.random(),
@@ -53,10 +50,6 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
 
   try {
     switch (intent) {
-      case ACTIONS.SIGN_IN:
-        return await handleSignIn(request, context)
-      case ACTIONS.SIGN_OUT:
-        return await handleSignOut(request, context)
       case ACTIONS.FAVORITE:
         return await handleFavorite(request, context)
       case ACTIONS.SCRAPE:

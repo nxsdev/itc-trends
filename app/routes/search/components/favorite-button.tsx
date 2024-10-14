@@ -5,7 +5,6 @@ import { toast } from "sonner"
 import { SignInModal } from "~/components/sign-in-modal"
 import { Button } from "~/components/ui/button"
 import { useUser } from "~/hooks/use-user"
-import type { AuthProvider } from "~/lib/supabase/auth.supabase.server"
 import { FavoriteAction, type FavoriteResult } from "../types"
 
 type FavoriteButtonProps = {
@@ -70,10 +69,6 @@ export function FavoriteButton({
     }
   }
 
-  const handleSignIn = (provider: AuthProvider) => {
-    fetcher.submit({ intent: "sign-in", provider }, { method: "post" })
-  }
-
   const starClassName = `transition-all duration-100 ease-out ${
     isFavorite ? "text-brand fill-brand" : "text-foreground-muted"
   }`
@@ -87,7 +82,6 @@ export function FavoriteButton({
           </Button>
         }
         description="お気に入りに追加して、最新の分析結果をいつでもチェック。アカウントにサインインして、あなただけのウォッチリストを作成しましょう。"
-        onSignIn={handleSignIn}
       />
     )
   }

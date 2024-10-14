@@ -6,15 +6,16 @@
     "**/.server/**/*.tsx",
     "**/.client/**/*.ts",
     "**/.client/**/*.tsx",
-    "node_modules/@remix-run/react/future/single-fetch.d.ts"
+    "node_modules/@remix-run/react/future/single-fetch.d.ts",
+    "worker-configuration.d.ts"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "types": [
-        "@remix-run/cloudflare",
-        "vite/client",
-        "@cloudflare/workers-types/2023-07-01",
-        "@remix-run/react/future/single-fetch.d.ts"
+      "@remix-run/cloudflare",
+      "vite/client",
+      "@cloudflare/workers-types/2023-07-01",
+      "@remix-run/react/future/single-fetch.d.ts"
     ],
     "isolatedModules": true,
     "esModuleInterop": true,
