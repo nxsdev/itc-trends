@@ -40,7 +40,6 @@ export default function AppWithProviders() {
       <Provider store={store}>
         <App />
       </Provider>
-      <App />
     </ThemeProvider>
   )
 }
@@ -86,10 +85,11 @@ export function App() {
         <Links />
       </head>
       <body className="min-h-screen antialiased">
+        <Toaster />
         <Header user={data.user} />
         <Outlet />
-        <Toaster />
-        <Footer theme={!isSystemTheme && theme === Theme.LIGHT ? Theme.LIGHT : Theme.DARK} />
+
+        <Footer theme={!isSystemTheme && theme === Theme.DARK ? Theme.DARK : Theme.LIGHT} />
         <ScrollRestoration />
         <Scripts />
       </body>

@@ -1,4 +1,4 @@
-import { Form, Link } from "@remix-run/react"
+import { Form, Link, useLocation } from "@remix-run/react"
 import type * as React from "react"
 import { RiGithubLine, RiGoogleLine, RiTwitterXLine } from "react-icons/ri"
 import { Theme, useTheme } from "remix-themes"
@@ -14,6 +14,11 @@ interface SignInModalProps {
 
 export const SignInModal: React.FC<SignInModalProps> = ({ triggerButton, description }) => {
   const [theme] = useTheme()
+  const location = useLocation()
+
+  // 現在のURLを取得（パスとクエリパラメーターを含む）
+  const currentUrl = `${location.pathname}${location.search}`
+
   return (
     <DialogRoot>
       {triggerButton}
@@ -28,16 +33,22 @@ export const SignInModal: React.FC<SignInModalProps> = ({ triggerButton, descrip
         </DialogHeader>
         <div className="flex flex-col gap-2">
           <Form method="post" action={`/auth/${AUTH_PROVIDERS.GITHUB}`}>
+            <input type="hidden" name="provider" value={AUTH_PROVIDERS.GITHUB} />
+            <input type="hidden" name="redirectTo" value={currentUrl} />
             <Button type="submit" prefix={<RiGithubLine />} className="h-10 w-full">
               GitHubでサインイン・新規登録
             </Button>
           </Form>
           <Form method="post" action={`/auth/${AUTH_PROVIDERS.GOOGLE}`}>
+            <input type="hidden" name="provider" value={AUTH_PROVIDERS.GOOGLE} />
+            <input type="hidden" name="redirectTo" value={currentUrl} />
             <Button type="submit" prefix={<RiGoogleLine />} className="h-10 w-full">
               Googleでサインイン・新規登録
             </Button>
           </Form>
           <Form method="post" action={`/auth/${AUTH_PROVIDERS.TWITTER}`}>
+            <input type="hidden" name="provider" value={AUTH_PROVIDERS.TWITTER} />
+            <input type="hidden" name="redirectTo" value={currentUrl} />
             <Button type="submit" prefix={<RiTwitterXLine />} className="h-10 w-full">
               X(Twitter)でサインイン・新規登録
             </Button>

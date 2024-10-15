@@ -11,7 +11,7 @@ import type {
   LoaderFunctionArgs,
 } from "@remix-run/cloudflare"
 import { RemixServer } from "@remix-run/react"
-import * as Sentry from "@sentry/cloudflare"
+// import * as Sentry from "@sentry/cloudflare"
 import { isbot } from "isbot"
 import { renderToReadableStream } from "react-dom/server"
 

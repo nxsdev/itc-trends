@@ -1,4 +1,4 @@
-// import { useAsyncError } from "@remix-run/react"
+import { useAsyncError } from "@remix-run/react"
 import { InsuredCountChart } from "./insured-count-chart"
 
 import { use } from "react"
@@ -13,11 +13,11 @@ type CompanyListProps = {
 
 export function CompanyList({ companiesPromise }: CompanyListProps) {
   const companies = use(companiesPromise)
-  console.dir(companies, { depth: null })
+  // console.dir(companies, { depth: null })
   // const companies = []
   // データの存在を確認
   if (!companies || !Array.isArray(companies)) {
-    return <ErrorBoundary />
+    return <LoadingError />
   }
 
   if (companies.length === 0) {
@@ -48,8 +48,8 @@ export function LoadingSkeleton() {
   )
 }
 
-export function ErrorBoundary() {
-  // const error = useAsyncError()
-  // console.error("Error loading companies:", error)
+export function LoadingError() {
+  const error = useAsyncError()
+  console.error("Error loading companies:", error)
   return <p>Error loading companies. Please try again later.</p>
 }

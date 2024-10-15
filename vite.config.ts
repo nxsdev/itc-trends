@@ -11,17 +11,17 @@ import babel from "vite-plugin-babel"
 import tsconfigPaths from "vite-tsconfig-paths"
 import { getLoadContext } from "./load-context"
 
-declare module "@remix-run/server-runtime" {
+declare module "@remix-run/cloudflare" {
   interface Future {
-    unstable_singleFetch: true // 👈 enable _types_ for single-fetch
+    v3_singleFetch: true
   }
 }
 
-installGlobals()
+installGlobals({ nativeFetch: true })
 
 export default defineConfig({
   plugins: [
-    // remixDevTools(),
+    remixDevTools(),
     remixCloudflareDevProxy({ getLoadContext }),
     remix({
       future: {
@@ -29,7 +29,8 @@ export default defineConfig({
         v3_relativeSplatPath: true,
         v3_throwAbortReason: true,
         v3_lazyRouteDiscovery: true,
-        unstable_optimizeDeps: true,
+        v3_singleFetch: true,
+        // unstable_optimizeDeps: true,
       },
       // Flat routes configuration
       routes: async (defineRoutes: DefineRoutesFunction) => {
@@ -41,13 +42,13 @@ export default defineConfig({
       // default remix convention from picking up routes
       ignoredRouteFiles: ["**/*"],
     }),
-    // babel({
-    //   filter: /\.[jt]sx?$/,
-    //   babelConfig: {
-    //     presets: ["@babel/preset-typescript"], // if you use TypeScript
-    //     plugins: ["babel-plugin-react-compiler"],
-    //   },
-    // }),
+    babel({
+      filter: /\.[jt]sx?$/,
+      babelConfig: {
+        presets: ["@babel/preset-typescript"], // if you use TypeScript
+        plugins: ["babel-plugin-react-compiler"],
+      },
+    }),
     tsconfigPaths(),
     devErrorBoundary(),
   ],

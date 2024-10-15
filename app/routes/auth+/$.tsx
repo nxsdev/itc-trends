@@ -8,18 +8,20 @@ export async function loader() {
   return redirect("/")
 }
 
-export async function action({ request, context }: ActionFunctionArgs) {
-  const formData = await request.formData()
-  const provider = formData.get("provider") as AuthProvider
-  const redirectTo = (formData.get("redirect_to") as string) || "/"
+export async function action({ request, context, params }: ActionFunctionArgs) {
+  const provider = params["*"] as AuthProvider
+  console.log(request.url)
+  console.log("provider", provider)
 
   if (!isValidAuthProvider(provider)) {
     throw new NotFoundError()
   }
 
+  // リクエストをクローンして formData を取得
+  const clonedRequest = request.clone()
+  const formData = await clonedRequest.formData()
+  const redirectTo = (formData.get("redirectTo") as string) || "/"
+
   const authenticator = getAuthenticator(context)
-  return authenticator.authenticate(provider, request, {
-    successRedirect: redirectTo,
-    failureRedirect: "/",
-  })
+  return authenticator.authenticate(provider, request)
 }

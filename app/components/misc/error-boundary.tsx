@@ -1,5 +1,6 @@
 import type { ErrorResponse } from "@remix-run/cloudflare"
 import { isRouteErrorResponse, useParams, useRouteError } from "@remix-run/react"
+import { JSX } from "react"
 
 type StatusHandler = (info: {
   error: ErrorResponse

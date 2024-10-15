@@ -25,31 +25,52 @@ export function getAuthenticator(context: AppLoadContext) {
         redirectURI: `${context.cloudflare.env.APP_URL}/auth/github/callback`,
       },
       async ({ profile }) => {
+        console.dir(profile, { depth: null })
         const { db } = context
 
-        const existingUser = await db.query.users.findFirst({
+        let user = await db.query.users.findFirst({
           where: and(eq(users.email, profile.emails[0].value), eq(users.provider, "github")),
         })
 
-        if (existingUser) {
-          return existingUser
+        if (user) {
+          // 既存のユーザーを更新
+          console.log("Updating existing user")
+          user = await db
+            .update(users)
+            .set({
+              username: profile.displayName || "",
+              fullName: `${profile.name.familyName} ${profile.name.givenName}`.trim() || "",
+              avatarUrl: profile.photos[0].value || "",
+            })
+            .where(eq(users.id, user.id))
+            .returning()
+            .then((results) => results[0])
+        } else {
+          // 新しいユーザーを作成
+          console.log("Creating new user")
+          user = await db
+            .insert(users)
+            .values({
+              id: crypto.randomUUID(),
+              email: profile.emails[0].value || "",
+              username: profile.displayName || "",
+              fullName: `${profile.name.familyName} ${profile.name.givenName}`.trim() || "",
+              avatarUrl: profile.photos[0].value || "",
+              provider: "github",
+              plan: "free",
+              isAdmin: false,
+            })
+            .returning()
+            .then((results) => results[0])
         }
 
-        const newUser = await db
-          .insert(users)
-          .values({
-            id: crypto.randomUUID(), // Generate a new UUID
-            email: profile.emails[0].value || "",
-            username: profile.displayName || "",
-            fullName: `${profile.name.familyName} ${profile.name.givenName}` || "",
-            avatarUrl: profile.photos[0].value || "",
-            provider: "github",
-            plan: "free", // Default plan
-            isAdmin: false,
-          })
-          .returning()
+        console.log("User operation result:", user)
 
-        return newUser[0]
+        if (!user) {
+          throw new Error("User operation failed: No user returned")
+        }
+
+        return user
       }
     )
   )

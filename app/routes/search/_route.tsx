@@ -36,7 +36,6 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request)
   console.dir(user, { depth: null })
   const companiesPromise = getCompanies(context, params, user)
-  console.dir(companiesPromise, { depth: null })
 
   return {
     key: Math.random(),
